@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TWF - TILE FILE WIDGET</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        #background {
+            height: 100vh;
+            width: 100vw;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="210" height="210" viewBox="0 0 210 210"><rect width="210" height="210" fill="%23ffcc00"/><text x="-109.43125" y="190.08473" transform="rotate(-45)" style="font-family:monospace; font-size:105.833px; fill:%23000000; stroke:%23000000; stroke-width:10;">TFW</text><path d="M 106.05845,211.0582 211.05824,106.05841 v -4.24263 L 101.81582,211.0582 Z" fill="%23000000"/><g transform="translate(-1.0583333,-1.0583333)"><path d="M 104.99979,0 0,104.99979 v 4.24263 L 109.24242,0 Z" fill="%23000000"/></g><path d="M 18.065359,0 C 18.065359,9.9772223 9.9772223,18.065359 0,18.065359 0,0 0,0 0,0 Z" fill="%23000000"/><path d="M 210,18.06536 C 200.02278,18.06536 191.93464,9.9772205 191.93464,0 210,0 210,0 210,0 Z" fill="%23000000"/><path d="m 0,191.93459 c 9.97722,0 18.06536,8.08814 18.06536,18.06536 -18.06536,0 -18.06536,0 -18.06536,0 z" fill="%23000000"/><path d="m 191.93464,209.99995 c 0,-9.97722 8.08814,-18.06536 18.06536,-18.06536 0,18.06536 0,18.06536 0,18.06536 z" fill="%23000000"/></svg>');
+            background-repeat: repeat;
+            background-size: 200px;
+            transition: background-size 0.3s ease;
+        }
+        
+        #controls {
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            min-width: 320px;
+            transition: all 0.3s ease;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .control-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+            transition: background 0.3s ease;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        
+        .file-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            background: #fafafa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .file-input:hover {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+        }
+        
+        .reset-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #ff6b6b;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .reset-button:hover {
+            background: #ff5252;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+        
+        .reset-button:active {
+            transform: translateY(0);
+        }
+        
+        .value-display {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Embedded SVG for easy editing -->
+    <svg id="tfw-tile" width="0" height="0" style="position: absolute; visibility: hidden;">
+        <defs>
+            <pattern id="tfwPattern" width="210" height="210" patternUnits="userSpaceOnUse">
+                <rect width="210" height="210" fill="#ffcc00"/>
+                <text x="-109.43125" y="190.08473" transform="rotate(-45)" 
+                      style="font-family:'NK57 Monospace', monospace; font-size:105.833px; fill:#000000; stroke:#000000; stroke-width:10; stroke-linejoin:miter;">TFW</text>
+                <path d="M 106.05845,211.0582 211.05824,106.05841 v -4.24263 L 101.81582,211.0582 Z" fill="#000000"/>
+                <g transform="translate(-1.0583333,-1.0583333)">
+                    <path d="M 104.99979,0 0,104.99979 v 4.24263 L 109.24242,0 Z" fill="#000000"/>
+                </g>
+                <path d="M 18.065359,0 C 18.065359,9.9772223 9.9772223,18.065359 0,18.065359 0,0 0,0 0,0 Z" fill="#000000"/>
+                <path d="M 210,18.06536 C 200.02278,18.06536 191.93464,9.9772205 191.93464,0 210,0 210,0 210,0 Z" fill="#000000"/>
+                <path d="m 0,191.93459 c 9.97722,0 18.06536,8.08814 18.06536,18.06536 -18.06536,0 -18.06536,0 -18.06536,0 z" fill="#000000"/>
+                <path d="m 191.93464,209.99995 c 0,-9.97722 8.08814,-18.06536 18.06536,-18.06536 0,18.06536 0,18.06536 0,18.06536 z" fill="#000000"/>
+            </pattern>
+        </defs>
+    </svg>
+    
+    <div id="background"></div>
+    
+    <div id="controls">
+        <div class="control-group">
+            <label class="control-label" for="darkness">Background Darkness</label>
+            <input type="range" id="darkness" class="slider" min="0" max="100" value="10">
+            <div class="value-display" id="darknessValue">10%</div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="corners">Corner Rounding</label>
+            <input type="range" id="corners" class="slider" min="0" max="50" value="20">
+            <div class="value-display" id="cornersValue">20px</div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="tileSize">Tile Size</label>
+            <input type="range" id="tileSize" class="slider" min="10" max="1000" value="200">
+            <div class="value-display" id="tileSizeValue">200px</div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="fileInput">Change Background Image</label>
+            <input type="file" id="fileInput" class="file-input" accept="image/*">
+            <div class="value-display">Click to select an image file</div>
+        </div>
+        
+        <div class="control-group">
+            <button id="resetBtn" class="reset-button">Reset to Defaults</button>
+        </div>
+    </div>
+
+    <script>
+        // Get elements
+        const background = document.getElementById('background');
+        const controls = document.getElementById('controls');
+        const darknessSlider = document.getElementById('darkness');
+        const cornersSlider = document.getElementById('corners');
+        const tileSizeSlider = document.getElementById('tileSize');
+        const fileInput = document.getElementById('fileInput');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // Value displays
+        const darknessValue = document.getElementById('darknessValue');
+        const cornersValue = document.getElementById('cornersValue');
+        const tileSizeValue = document.getElementById('tileSizeValue');
+        
+        // Default values
+        const defaults = {
+            darkness: 10,
+            corners: 20,
+            tileSize: 200,
+            background: 'url(\'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="210" height="210" viewBox="0 0 210 210"><rect width="210" height="210" fill="%23ffcc00"/><text x="-109.43125" y="190.08473" transform="rotate(-45)" style="font-family:monospace; font-size:105.833px; fill:%23000000; stroke:%23000000; stroke-width:10;">TFW</text><path d="M 106.05845,211.0582 211.05824,106.05841 v -4.24263 L 101.81582,211.0582 Z" fill="%23000000"/><g transform="translate(-1.0583333,-1.0583333)"><path d="M 104.99979,0 0,104.99979 v 4.24263 L 109.24242,0 Z" fill="%23000000"/></g><path d="M 18.065359,0 C 18.065359,9.9772223 9.9772223,18.065359 0,18.065359 0,0 0,0 0,0 Z" fill="%23000000"/><path d="M 210,18.06536 C 200.02278,18.06536 191.93464,9.9772205 191.93464,0 210,0 210,0 210,0 Z" fill="%23000000"/><path d="m 0,191.93459 c 9.97722,0 18.06536,8.08814 18.06536,18.06536 -18.06536,0 -18.06536,0 -18.06536,0 z" fill="%23000000"/><path d="m 191.93464,209.99995 c 0,-9.97722 8.08814,-18.06536 18.06536,-18.06536 0,18.06536 0,18.06536 0,18.06536 z" fill="%23000000"/></svg>\')'
+        };
+        
+        // Function to extract colors from SVG and update slider styling
+        function updateSliderColors() {
+            // Default TFW colors since we know them
+            const bgColor = '#ffcc00'; // Yellow background
+            const fgColor = '#000000'; // Black foreground
+            
+            // Convert hex to RGB for manipulation
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : {r: 255, g: 204, b: 0};
+            }
+            
+            function rgbToHex(r, g, b) {
+                return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+            }
+            
+            // Make track color 50% whiter than foreground
+            const fgRgb = hexToRgb(fgColor);
+            const trackColor = rgbToHex(
+                Math.min(255, Math.floor(fgRgb.r + (255 - fgRgb.r) * 0.5)),
+                Math.min(255, Math.floor(fgRgb.g + (255 - fgRgb.g) * 0.5)),
+                Math.min(255, Math.floor(fgRgb.b + (255 - fgRgb.b) * 0.5))
+            );
+            
+            // Apply colors to all sliders
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                // Set track color
+                slider.style.background = trackColor;
+                
+                // Set thumb color to background color
+                slider.style.setProperty('--thumb-color', bgColor);
+            });
+            
+            // Update CSS custom properties for cross-browser thumb styling
+            const style = document.createElement('style');
+            style.textContent = `
+                .slider::-webkit-slider-thumb {
+                    background: ${bgColor} !important;
+                }
+                .slider::-moz-range-thumb {
+                    background: ${bgColor} !important;
+                }
+                .slider::-webkit-slider-thumb:hover {
+                    background: ${bgColor} !important;
+                    filter: brightness(0.9);
+                }
+            `;
+            
+            // Remove any existing style element we added
+            const existingStyle = document.getElementById('dynamic-slider-styles');
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            style.id = 'dynamic-slider-styles';
+            document.head.appendChild(style);
+        }
+        
+        // Reset button event listener
+        resetBtn.addEventListener('click', resetToDefaults);
+        
+        // Reset function
+        function resetToDefaults() {
+            // Reset sliders
+            darknessSlider.value = defaults.darkness;
+            cornersSlider.value = defaults.corners;
+            tileSizeSlider.value = defaults.tileSize;
+            
+            // Reset displays
+            darknessValue.textContent = defaults.darkness + '%';
+            cornersValue.textContent = defaults.corners + 'px';
+            tileSizeValue.textContent = defaults.tileSize + 'px';
+            
+            // Reset background
+            background.style.backgroundImage = defaults.background;
+            background.style.backgroundRepeat = 'repeat';
+            background.style.backgroundSize = defaults.tileSize + 'px';
+            
+            // Reset control panel styling
+            const alpha = defaults.darkness / 100;
+            const bgColor = 255 - defaults.darkness * 2.55;
+            controls.style.background = `rgba(${bgColor}, ${bgColor}, ${bgColor}, ${0.9 - alpha * 0.4})`;
+            controls.style.borderRadius = defaults.corners + 'px';
+            
+            // Reset text colors
+            const shouldUseWhiteText = defaults.darkness > 50;
+            const textColor = shouldUseWhiteText ? '#ffffff' : '#333333';
+            const valueColor = shouldUseWhiteText ? '#cccccc' : '#666666';
+            
+            document.querySelectorAll('.control-label').forEach(label => {
+                label.style.color = textColor;
+            });
+            document.querySelectorAll('.value-display').forEach(display => {
+                display.style.color = valueColor;
+            });
+            
+            // Reset slider colors to TFW defaults
+            updateSliderColors();
+            
+            // Clear file input
+            fileInput.value = '';
+        }
+        
+        // Function to extract colors from user-uploaded image
+        function extractColorsFromImage(imageSrc) {
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                
+                img.onload = function() {
+                    canvas.width = Math.min(img.width, 100);
+                    canvas.height = Math.min(img.height, 100);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imageData.data;
+                    
+                    // Sample colors from different parts of the image
+                    const colors = [];
+                    for (let i = 0; i < data.length; i += 4 * 10) { // Sample every 10th pixel
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+                        const alpha = data[i + 3];
+                        
+                        if (alpha > 128) { // Only consider non-transparent pixels
+                            colors.push({r, g, b});
+                        }
+                    }
+                    
+                    if (colors.length === 0) {
+                        resolve({bgColor: '#ffcc00', fgColor: '#000000'});
+                        return;
+                    }
+                    
+                    // Find the most common color (background) and a contrasting color (foreground)
+                    const colorCounts = {};
+                    colors.forEach(color => {
+                        const key = `${Math.floor(color.r/32)*32},${Math.floor(color.g/32)*32},${Math.floor(color.b/32)*32}`;
+                        colorCounts[key] = (colorCounts[key] || 0) + 1;
+                    });
+                    
+                    const sortedColors = Object.entries(colorCounts).sort((a, b) => b[1] - a[1]);
+                    const bgColorRgb = sortedColors[0][0].split(',').map(n => parseInt(n));
+                    const bgColor = `rgb(${bgColorRgb.join(',')})`;
+                    
+                    // Find a contrasting color
+                    let fgColor = '#000000';
+                    if (sortedColors.length > 1) {
+                        const fgColorRgb = sortedColors[1][0].split(',').map(n => parseInt(n));
+                        fgColor = `rgb(${fgColorRgb.join(',')})`;
+                    }
+                    
+                    resolve({bgColor, fgColor});
+                };
+                
+                img.crossOrigin = 'anonymous';
+                img.src = imageSrc;
+            });
+        }
+        
+        // Update background darkness
+        darknessSlider.addEventListener('input', function() {
+            const darkness = this.value;
+            const alpha = darkness / 100;
+            const bgColor = 255 - darkness * 2.55;
+            
+            // Update control panel background
+            controls.style.background = `rgba(${bgColor}, ${bgColor}, ${bgColor}, ${0.9 - alpha * 0.4})`;
+            
+            // Auto-flip text color for contrast
+            const shouldUseWhiteText = darkness > 50;
+            const textColor = shouldUseWhiteText ? '#ffffff' : '#333333';
+            const valueColor = shouldUseWhiteText ? '#cccccc' : '#666666';
+            
+            // Apply text colors
+            document.querySelectorAll('.control-label').forEach(label => {
+                label.style.color = textColor;
+            });
+            document.querySelectorAll('.value-display').forEach(display => {
+                display.style.color = valueColor;
+            });
+            
+            darknessValue.textContent = darkness + '%';
+        });
+        
+        // Update corner rounding
+        cornersSlider.addEventListener('input', function() {
+            const corners = this.value;
+            controls.style.borderRadius = corners + 'px';
+            cornersValue.textContent = corners + 'px';
+        });
+        
+        // Update tile size
+        tileSizeSlider.addEventListener('input', function() {
+            const size = this.value;
+            background.style.backgroundSize = size + 'px';
+            tileSizeValue.textContent = size + 'px';
+        });
+        
+        // Handle file input
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    background.style.background = `url(${e.target.result})`;
+                    background.style.backgroundRepeat = 'repeat';
+                    background.style.backgroundSize = tileSizeSlider.value + 'px';
+                    
+                    // Extract colors from the uploaded image and update sliders
+                    try {
+                        const colors = await extractColorsFromImage(e.target.result);
+                        updateSliderColorsWithCustom(colors.bgColor, colors.fgColor);
+                    } catch (error) {
+                        console.log('Could not extract colors from image, using defaults');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Function to update slider colors with custom colors
+        function updateSliderColorsWithCustom(bgColor, fgColor) {
+            // Convert RGB to hex if needed
+            function rgbToHex(rgb) {
+                if (rgb.startsWith('#')) return rgb;
+                const result = rgb.match(/\d+/g);
+                if (!result || result.length < 3) return '#ffcc00';
+                const r = parseInt(result[0]);
+                const g = parseInt(result[1]);
+                const b = parseInt(result[2]);
+                return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+            }
+            
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : {r: 255, g: 204, b: 0};
+            }
+            
+            const bgHex = rgbToHex(bgColor);
+            const fgHex = rgbToHex(fgColor);
+            
+            // Make track color 50% whiter than foreground
+            const fgRgb = hexToRgb(fgHex);
+            const trackColor = "#" + ((1 << 24) + 
+                (Math.min(255, Math.floor(fgRgb.r + (255 - fgRgb.r) * 0.5)) << 16) + 
+                (Math.min(255, Math.floor(fgRgb.g + (255 - fgRgb.g) * 0.5)) << 8) + 
+                Math.min(255, Math.floor(fgRgb.b + (255 - fgRgb.b) * 0.5))).toString(16).slice(1);
+            
+            // Apply colors to all sliders
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                slider.style.background = trackColor;
+            });
+            
+            // Update CSS for thumb colors
+            const style = document.createElement('style');
+            style.textContent = `
+                .slider::-webkit-slider-thumb {
+                    background: ${bgHex} !important;
+                }
+                .slider::-moz-range-thumb {
+                    background: ${bgHex} !important;
+                }
+                .slider::-webkit-slider-thumb:hover {
+                    background: ${bgHex} !important;
+                    filter: brightness(0.9);
+                }
+            `;
+            
+            const existingStyle = document.getElementById('dynamic-slider-styles');
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            style.id = 'dynamic-slider-styles';
+            document.head.appendChild(style);
+        }
+        
+        // Initialize values and colors
+        darknessValue.textContent = darknessSlider.value + '%';
+        cornersValue.textContent = cornersSlider.value + 'px';
+        tileSizeValue.textContent = tileSizeSlider.value + 'px';
+        
+        // Set initial slider colors based on the default SVG
+        updateSliderColors();
+    </script>
+</body>
+</html>
