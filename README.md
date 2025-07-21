@@ -2,7 +2,7 @@
 
 A dynamic web tool for creating and customizing tiled background patterns. Originally designed for Team Family Wiess, this widget allows you to tile images seamlessly with interactive controls for real-time customization. Test to make sure your backgrounds as perfectly coordinated as a statue-turning jack.
 
-![TFW Widget Screenshot](screenshot.png)
+[TFW Widget Screenshot](screenshot.png)
 
 ## Features
 
@@ -93,7 +93,7 @@ Contributions welcome! Please feel free to submit pull requests for:
 
 ## License
 
-[todo]
+This little project licensed under GPL-3.0. See COPYING for more information.
 
 
 ## Credits
