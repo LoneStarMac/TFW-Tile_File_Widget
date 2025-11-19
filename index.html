@@ -48,12 +48,116 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(25, 25, 25, 0.9);
-            padding: 30px;
+            padding: 0;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             backdrop-filter: blur(10px);
-            min-width: 320px;
+            min-width: 350px;
             transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        #controls.minimized {
+            top: auto;
+            left: auto;
+            bottom: 20px;
+            right: 20px;
+            transform: none;
+            padding: 15px 20px;
+            min-width: 200px;
+        }
+        
+        #controls.minimized .tab-navigation,
+        #controls.minimized .tab-content {
+            display: none;
+        }
+        
+        #controls.minimized #minimizedContent {
+            display: flex;
+        }
+        
+        #minimizedContent {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #expandBtn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.2s ease;
+        }
+        
+        #expandBtn:hover {
+            transform: translateY(-2px);
+        }
+        
+        #creditText {
+            font-size: 12px;
+            color: #cccccc;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        #creditText:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        
+        .tab-navigation {
+            display: flex;
+            background: rgba(15, 15, 15, 0.5);
+            border-radius: 15px 15px 0 0;
+            transition: background 0.3s ease;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background: transparent;
+            color: #999;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-button:first-child {
+            border-radius: 15px 0 0 0;
+        }
+        
+        .tab-button:last-child {
+            border-radius: 0 15px 0 0;
+        }
+        
+        .tab-button:hover {
+            background: rgba(128, 128, 128, 0.1);
+        }
+        
+        .tab-button.active {
+            background: rgba(128, 128, 128, 0.2);
+            color: #ffffff;
+            border-bottom-color: #ffcc00;
+        }
+        
+        .tab-content {
+            padding: 30px;
+        }
+        
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
         }
         
         .control-group {
@@ -126,12 +230,11 @@
             background: #f0f8f0;
         }
         
-        .reset-button {
+        .action-button {
             width: 100%;
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background: #ff6b6b;
             color: white;
             font-size: 14px;
             font-weight: 600;
@@ -139,14 +242,53 @@
             transition: all 0.2s ease;
         }
         
-        .reset-button:hover {
-            background: #ff5252;
+        .action-button:hover {
             transform: translateY(-1px);
+        }
+        
+        .action-button:active {
+            transform: translateY(0);
+        }
+        
+        #resetBtn {
+            background: #ff6b6b;
+        }
+        
+        #resetBtn:hover {
+            background: #ff5252;
             box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
         }
         
-        .reset-button:active {
-            transform: translateY(0);
+        #downloadBtn {
+            background: #4CAF50;
+        }
+        
+        #downloadBtn:hover {
+            background: #45a049;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+        
+        #doneBtn {
+            background: #2196F3;
+        }
+        
+        #doneBtn:hover {
+            background: #0b7dda;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+        
+        .button-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .button-row-triple {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
         }
         
         .value-display {
@@ -154,6 +296,75 @@
             color: #cccccc;
             margin-top: 4px;
             transition: color 0.3s ease;
+        }
+        
+        .dropdown-select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background: #fafafa;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .dropdown-select:hover {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+        }
+        
+        .dropdown-select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+        
+        .control-label input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        .about-content {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        .about-content h2 {
+            color: #ffcc00;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .about-content p {
+            margin-bottom: 15px;
+        }
+        
+        .about-content a {
+            color: #4CAF50;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .about-content a:hover {
+            color: #45a049;
+            text-decoration: underline;
+        }
+        
+        .about-content .license {
+            font-size: 11px;
+            color: #888;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -180,36 +391,124 @@
     <div id="background"></div>
     
     <div id="controls">
-        <div class="control-group">
-            <label class="control-label" for="darkness">Dialog Box Darkness</label>
-            <input type="range" id="darkness" class="slider" min="0" max="100" value="90">
-            <div class="value-display" id="darknessValue">90%</div>
+        <div id="minimizedContent">
+            <button id="expandBtn" title="Expand controls">▲</button>
+            <a id="creditText" href="#" target="_blank">Credit: 2025 LoneStar Mac</a>
         </div>
         
-        <div class="control-group">
-            <label class="control-label" for="corners">Corner Roundness</label>
-            <input type="range" id="corners" class="slider" min="0" max="50" value="15">
-            <div class="value-display" id="cornersValue">15px</div>
+        <div class="tab-navigation">
+            <button class="tab-button active" data-tab="main">Main</button>
+            <button class="tab-button" data-tab="settings">⚙️ Settings</button>
+            <button class="tab-button" data-tab="about">About</button>
         </div>
         
-        <div class="control-group">
-            <label class="control-label" for="tileSize">Tile Size</label>
-            <input type="range" id="tileSize" class="slider" min="10" max="1000" value="70">
-            <div class="value-display" id="tileSizeValue">70px</div>
-        </div>
-        
-        <div class="control-group">
-            <label class="control-label" for="fileInput">Change Tile Image</label>
-            <input type="file" id="fileInput" class="file-input" accept="image/*">
-            <div class="value-display">Click to select an image file</div>
-        </div>
-        
-        <div class="control-group">
-            <button id="resetBtn" class="reset-button">Reset</button>
+        <div class="tab-content">
+            <!-- Main Tab -->
+            <div class="tab-panel active" id="main">
+                <div class="control-group">
+                    <label class="control-label" for="tileSize">Tile Size</label>
+                    <input type="range" id="tileSize" class="slider" min="10" max="1000" value="70">
+                    <div class="value-display" id="tileSizeValue">70px</div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label" for="fileInput">Change Tile Image</label>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                    <div class="value-display">Click to select an image file</div>
+                </div>
+                
+                <div class="button-row-triple">
+                    <button id="resetBtn" class="action-button">Reset</button>
+                    <button id="downloadBtn" class="action-button">Download</button>
+                    <button id="doneBtn" class="action-button">Done</button>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="tab-panel" id="settings">
+                <div class="control-group">
+                    <label class="control-label" for="darkness">Dialog Box Darkness</label>
+                    <input type="range" id="darkness" class="slider" min="0" max="100" value="90">
+                    <div class="value-display" id="darknessValue">90%</div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label" for="corners">Corner Roundness</label>
+                    <input type="range" id="corners" class="slider" min="0" max="50" value="15">
+                    <div class="value-display" id="cornersValue">15px</div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label" for="exportResolution">Export Resolution</label>
+                    <select id="exportResolution" class="dropdown-select">
+                        <option value="1920x1080">1080p (1920x1080)</option>
+                        <option value="2560x1440">1440p (2560x1440)</option>
+                        <option value="3840x2160">4K (3840x2160)</option>
+                        <option value="5120x2880">5K (5120x2880)</option>
+                        <option value="7680x4320">8K (7680x4320)</option>
+                        <option value="1284x2778">iPhone (1284x2778)</option>
+                        <option value="viewport" selected>Current Window Size</option>
+                    </select>
+                    <div class="value-display">Choose export image dimensions</div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        <input type="checkbox" id="dualMonitor" class="checkbox-input">
+                        Dual Monitor Setup
+                    </label>
+                    <div class="value-display">Double the image size</div>
+                </div>
+                
+                <div class="control-group" id="orientationGroup" style="display: none;">
+                    <label class="control-label" for="dualOrientation">Monitor Orientation</label>
+                    <select id="dualOrientation" class="dropdown-select">
+                        <option value="horizontal">Horizontal (Side by Side)</option>
+                        <option value="vertical">Vertical (Stacked)</option>
+                    </select>
+                    <div class="value-display">How monitors are arranged</div>
+                </div>
+            </div>
+            
+            <!-- About Tab -->
+            <div class="tab-panel" id="about">
+                <div class="about-content">
+                    <h2>TFW - Tile File Widget</h2>
+                    <p>
+                        TFW is a simple web-based tool that allows you to create tiled backgrounds from any image. 
+                        Upload your own graphics, adjust the tile size, and preview the result in real-time.
+                    </p>
+                    <p>
+                        Perfect for creating desktop wallpapers, website backgrounds, or any other tiled design project.
+                    </p>
+                    <p>
+                        <strong>Features:</strong><br>
+                        • Upload custom images for tiling<br>
+                        • Real-time preview of tiled backgrounds<br>
+                        • Adjustable tile size<br>
+                        • Customizable dialog appearance<br>
+                        • Export as PNG with attribution
+                    </p>
+                    <p>
+                        For more information, visit the <a href="#" id="githubLink" target="_blank">GitHub project page</a>.
+                    </p>
+                    <div class="license">
+                        Copyright © 2025 LoneStarMac<br>
+                        Licensed under GNU GPL v3.0<br>
+                        This program comes with ABSOLUTELY NO WARRANTY.
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        // GitHub project URL - UPDATE THIS WITH YOUR ACTUAL GITHUB URL
+        const GITHUB_URL = 'https://github.com/LoneStarMac/TFW';
+        
+        // Store the current background image source for easy access during download
+        let currentBackgroundImageSrc = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="210" height="210" viewBox="0 0 210 210"><rect width="210" height="210" fill="%23ffcc00"/><text x="-109.43125" y="190.08473" transform="rotate(-45)" style="font-family:monospace; font-size:105.833px; fill:%23000000; stroke:%23000000; stroke-width:10;">TFW</text><path d="M 106.05845,211.0582 211.05824,106.05841 v -4.24263 L 101.81582,211.0582 Z" fill="%23000000"/><g transform="translate(-1.0583333,-1.0583333)"><path d="M 104.99979,0 0,104.99979 v 4.24263 L 109.24242,0 Z" fill="%23000000"/></g><path d="M 18.065359,0 C 18.065359,9.9772223 9.9772223,18.065359 0,18.065359 0,0 0,0 0,0 Z" fill="%23000000"/><path d="M 210,18.06536 C 200.02278,18.06536 191.93464,9.9772205 191.93464,0 210,0 210,0 210,0 Z" fill="%23000000"/><path d="m 0,191.93459 c 9.97722,0 18.06536,8.08814 18.06536,18.06536 -18.06536,0 -18.06536,0 -18.06536,0 z" fill="%23000000"/><path d="m 191.93464,209.99995 c 0,-9.97722 8.08814,-18.06536 18.06536,-18.06536 0,18.06536 0,18.06536 0,18.06536 z" fill="%23000000"/></svg>';
+        
         // get elements
         const background = document.getElementById('background');
         const controls = document.getElementById('controls');
@@ -218,11 +517,129 @@
         const tileSizeSlider = document.getElementById('tileSize');
         const fileInput = document.getElementById('fileInput');
         const resetBtn = document.getElementById('resetBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const doneBtn = document.getElementById('doneBtn');
+        const expandBtn = document.getElementById('expandBtn');
+        const creditText = document.getElementById('creditText');
+        const githubLink = document.getElementById('githubLink');
+        const exportResolution = document.getElementById('exportResolution');
+        const dualMonitor = document.getElementById('dualMonitor');
+        const dualOrientation = document.getElementById('dualOrientation');
+        const orientationGroup = document.getElementById('orientationGroup');
         
         // value displays
         const darknessValue = document.getElementById('darknessValue');
         const cornersValue = document.getElementById('cornersValue');
         const tileSizeValue = document.getElementById('tileSizeValue');
+        
+        // Set GitHub URLs
+        creditText.href = GITHUB_URL;
+        githubLink.href = GITHUB_URL;
+        
+        // Cookie management functions
+        function setCookie(name, value, days = 365) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+        
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+        
+        function savePreferences() {
+            const prefs = {
+                darkness: darknessSlider.value,
+                corners: cornersSlider.value,
+                tileSize: tileSizeSlider.value,
+                exportResolution: exportResolution.value,
+                dualMonitor: dualMonitor.checked,
+                dualOrientation: dualOrientation.value
+            };
+            setCookie('tfwPreferences', JSON.stringify(prefs));
+        }
+        
+        function loadPreferences() {
+            const prefsStr = getCookie('tfwPreferences');
+            if (prefsStr) {
+                try {
+                    const prefs = JSON.parse(prefsStr);
+                    
+                    // Apply saved preferences
+                    if (prefs.darkness !== undefined) {
+                        darknessSlider.value = prefs.darkness;
+                        darknessSlider.dispatchEvent(new Event('input'));
+                    }
+                    if (prefs.corners !== undefined) {
+                        cornersSlider.value = prefs.corners;
+                        cornersSlider.dispatchEvent(new Event('input'));
+                    }
+                    if (prefs.tileSize !== undefined) {
+                        tileSizeSlider.value = prefs.tileSize;
+                        tileSizeSlider.dispatchEvent(new Event('input'));
+                    }
+                    if (prefs.exportResolution !== undefined) {
+                        exportResolution.value = prefs.exportResolution;
+                    }
+                    if (prefs.dualMonitor !== undefined) {
+                        dualMonitor.checked = prefs.dualMonitor;
+                        orientationGroup.style.display = prefs.dualMonitor ? 'block' : 'none';
+                    }
+                    if (prefs.dualOrientation !== undefined) {
+                        dualOrientation.value = prefs.dualOrientation;
+                    }
+                } catch (e) {
+                    console.error('Error loading preferences:', e);
+                }
+            }
+        }
+        
+        // Dual monitor checkbox toggle
+        dualMonitor.addEventListener('change', function() {
+            orientationGroup.style.display = this.checked ? 'block' : 'none';
+            savePreferences();
+        });
+        
+        // Save preferences when settings change
+        darknessSlider.addEventListener('change', savePreferences);
+        cornersSlider.addEventListener('change', savePreferences);
+        tileSizeSlider.addEventListener('change', savePreferences);
+        exportResolution.addEventListener('change', savePreferences);
+        dualOrientation.addEventListener('change', savePreferences);
+        
+        // Tab switching functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                const darkness = darknessSlider.value;
+                const shouldUseWhiteText = darkness > 50;
+                const tabColor = shouldUseWhiteText ? '#999999' : '#666666';
+                const tabActiveColor = shouldUseWhiteText ? '#ffffff' : '#000000';
+                
+                // Remove active class from all buttons and panels
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.style.color = tabColor;
+                });
+                tabPanels.forEach(panel => panel.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding panel
+                button.classList.add('active');
+                button.style.color = tabActiveColor;
+                document.getElementById(targetTab).classList.add('active');
+            });
+        });
         
         // set default values
         const defaults = {
@@ -231,6 +648,140 @@
             tileSize: 70,
             background: 'url(\'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="210" height="210" viewBox="0 0 210 210"><rect width="210" height="210" fill="%23ffcc00"/><text x="-109.43125" y="190.08473" transform="rotate(-45)" style="font-family:monospace; font-size:105.833px; fill:%23000000; stroke:%23000000; stroke-width:10;">TFW</text><path d="M 106.05845,211.0582 211.05824,106.05841 v -4.24263 L 101.81582,211.0582 Z" fill="%23000000"/><g transform="translate(-1.0583333,-1.0583333)"><path d="M 104.99979,0 0,104.99979 v 4.24263 L 109.24242,0 Z" fill="%23000000"/></g><path d="M 18.065359,0 C 18.065359,9.9772223 9.9772223,18.065359 0,18.065359 0,0 0,0 0,0 Z" fill="%23000000"/><path d="M 210,18.06536 C 200.02278,18.06536 191.93464,9.9772205 191.93464,0 210,0 210,0 210,0 Z" fill="%23000000"/><path d="m 0,191.93459 c 9.97722,0 18.06536,8.08814 18.06536,18.06536 -18.06536,0 -18.06536,0 -18.06536,0 z" fill="%23000000"/><path d="m 191.93464,209.99995 c 0,-9.97722 8.08814,-18.06536 18.06536,-18.06536 0,18.06536 0,18.06536 0,18.06536 z" fill="%23000000"/></svg>\')'
         };
+        
+        // Done button - minimize dialog
+        doneBtn.addEventListener('click', function() {
+            controls.classList.add('minimized');
+        });
+        
+        // Expand button - restore dialog
+        expandBtn.addEventListener('click', function() {
+            controls.classList.remove('minimized');
+        });
+        
+        // Download button - export tiled background as PNG
+        downloadBtn.addEventListener('click', async function() {
+            try {
+                // Determine canvas dimensions based on export settings
+                let canvasWidth, canvasHeight;
+                
+                if (exportResolution.value === 'viewport') {
+                    canvasWidth = window.innerWidth;
+                    canvasHeight = window.innerHeight;
+                } else {
+                    const [width, height] = exportResolution.value.split('x').map(Number);
+                    canvasWidth = width;
+                    canvasHeight = height;
+                }
+                
+                // Apply dual monitor settings
+                if (dualMonitor.checked) {
+                    if (dualOrientation.value === 'horizontal') {
+                        canvasWidth *= 2;
+                    } else {
+                        canvasHeight *= 2;
+                    }
+                }
+                
+                console.log(`Exporting at ${canvasWidth}x${canvasHeight}`);
+                
+                // Create a canvas with the selected dimensions
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+                
+                // Get the current tile size
+                const bgSize = parseFloat(tileSizeSlider.value);
+                
+                console.log('Loading image from stored source...');
+                
+                // Load the tile image from our stored source
+                const img = await new Promise((resolve, reject) => {
+                    const image = new Image();
+                    
+                    image.onload = () => {
+                        console.log('Image loaded successfully:', image.width, 'x', image.height);
+                        resolve(image);
+                    };
+                    image.onerror = (e) => {
+                        console.error('Image load error:', e);
+                        reject(new Error('Failed to load tile image'));
+                    };
+                    
+                    image.src = currentBackgroundImageSrc;
+                });
+                
+                // Calculate how many tiles we need to fill the canvas
+                const tilesX = Math.ceil(canvas.width / bgSize) + 1;
+                const tilesY = Math.ceil(canvas.height / bgSize) + 1;
+                
+                console.log(`Drawing ${tilesX} x ${tilesY} tiles at ${bgSize}px each`);
+                
+                // Draw the tiled pattern
+                for (let y = 0; y < tilesY; y++) {
+                    for (let x = 0; x < tilesX; x++) {
+                        ctx.drawImage(img, x * bgSize, y * bgSize, bgSize, bgSize);
+                    }
+                }
+                
+                // Add credit text in lower right corner with better visibility
+                const fontSize = Math.max(14, Math.floor(canvas.width / 100)); // Scale font with resolution
+                ctx.font = `bold ${fontSize}px "Segoe UI", Tahoma, Geneva, Verdana, sans-serif`;
+                ctx.textBaseline = 'bottom';
+                
+                const creditMessage = 'Credit: 2025 LoneStar Mac';
+                const textMetrics = ctx.measureText(creditMessage);
+                const padding = Math.max(15, Math.floor(canvas.width / 100));
+                const textX = canvas.width - textMetrics.width - padding;
+                const textY = canvas.height - padding;
+                
+                // Draw text with stroke for visibility on any background
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
+                ctx.lineWidth = Math.max(4, Math.floor(fontSize / 4));
+                ctx.strokeText(creditMessage, textX, textY);
+                
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+                ctx.fillText(creditMessage, textX, textY);
+                
+                console.log('Converting to PNG...');
+                
+                // Convert canvas to blob and download
+                canvas.toBlob(function(blob) {
+                    if (!blob) {
+                        alert('Failed to create image file');
+                        return;
+                    }
+                    
+                    console.log('PNG created, downloading...');
+                    
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    
+                    // Generate filename based on settings
+                    let filename = 'tfw-tiled-background';
+                    if (exportResolution.value !== 'viewport') {
+                        filename += '-' + exportResolution.value.replace('x', 'x');
+                    }
+                    if (dualMonitor.checked) {
+                        filename += '-dual-' + dualOrientation.value;
+                    }
+                    filename += '.png';
+                    
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('Unable to export background. Error: ' + error.message);
+            }
+        });
         
         // function to extract colors from svg and update slider styling
         function updateSliderColors() {
@@ -304,12 +855,19 @@
             cornersSlider.value = defaults.corners;
             tileSizeSlider.value = defaults.tileSize;
             
+            // reset export settings
+            exportResolution.value = 'viewport';
+            dualMonitor.checked = false;
+            dualOrientation.value = 'horizontal';
+            orientationGroup.style.display = 'none';
+            
             // reset displays
             darknessValue.textContent = defaults.darkness + '%';
             cornersValue.textContent = defaults.corners + 'px';
             tileSizeValue.textContent = defaults.tileSize + 'px';
             
-            // reset background
+            // reset background and stored image source
+            currentBackgroundImageSrc = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="210" height="210" viewBox="0 0 210 210"><rect width="210" height="210" fill="%23ffcc00"/><text x="-109.43125" y="190.08473" transform="rotate(-45)" style="font-family:monospace; font-size:105.833px; fill:%23000000; stroke:%23000000; stroke-width:10;">TFW</text><path d="M 106.05845,211.0582 211.05824,106.05841 v -4.24263 L 101.81582,211.0582 Z" fill="%23000000"/><g transform="translate(-1.0583333,-1.0583333)"><path d="M 104.99979,0 0,104.99979 v 4.24263 L 109.24242,0 Z" fill="%23000000"/></g><path d="M 18.065359,0 C 18.065359,9.9772223 9.9772223,18.065359 0,18.065359 0,0 0,0 0,0 Z" fill="%23000000"/><path d="M 210,18.06536 C 200.02278,18.06536 191.93464,9.9772205 191.93464,0 210,0 210,0 210,0 Z" fill="%23000000"/><path d="m 0,191.93459 c 9.97722,0 18.06536,8.08814 18.06536,18.06536 -18.06536,0 -18.06536,0 -18.06536,0 z" fill="%23000000"/><path d="m 191.93464,209.99995 c 0,-9.97722 8.08814,-18.06536 18.06536,-18.06536 0,18.06536 0,18.06536 0,18.06536 z" fill="%23000000"/></svg>';
             background.style.backgroundImage = defaults.background;
             background.style.backgroundRepeat = 'repeat';
             background.style.backgroundSize = defaults.tileSize + 'px';
@@ -320,10 +878,17 @@
             controls.style.background = `rgba(${bgColor}, ${bgColor}, ${bgColor}, ${0.9 - alpha * 0.4})`;
             controls.style.borderRadius = defaults.corners + 'px';
             
+            // reset tab navigation
+            const tabNav = document.querySelector('.tab-navigation');
+            const navBgColor = Math.max(0, bgColor - 40);
+            tabNav.style.background = `rgba(${navBgColor}, ${navBgColor}, ${navBgColor}, ${0.7 - alpha * 0.3})`;
+            
             // reset text colors
             const shouldUseWhiteText = defaults.darkness > 50;
             const textColor = shouldUseWhiteText ? '#ffffff' : '#333333';
             const valueColor = shouldUseWhiteText ? '#cccccc' : '#666666';
+            const tabColor = shouldUseWhiteText ? '#999999' : '#666666';
+            const tabActiveColor = shouldUseWhiteText ? '#ffffff' : '#000000';
             
             document.querySelectorAll('.control-label').forEach(label => {
                 label.style.color = textColor;
@@ -332,11 +897,31 @@
                 display.style.color = valueColor;
             });
             
+            // reset tab colors
+            document.querySelectorAll('.tab-button').forEach(button => {
+                if (!button.classList.contains('active')) {
+                    button.style.color = tabColor;
+                } else {
+                    button.style.color = tabActiveColor;
+                }
+            });
+            
             // reset slider colors to tfw defaults
             updateSliderColors();
             
             // clear file input
             fileInput.value = '';
+            
+            // expand dialog if minimized and switch to main tab
+            controls.classList.remove('minimized');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanels.forEach(panel => panel.classList.remove('active'));
+            tabButtons[0].classList.add('active');
+            tabButtons[0].style.color = tabActiveColor;
+            document.getElementById('main').classList.add('active');
+            
+            // Save reset preferences
+            savePreferences();
         }
         
         // extract colors from user-uploaded svg
@@ -394,6 +979,10 @@
                 };
                 
                 img.crossOrigin = 'anonymous';
+                img.onerror = function() {
+                    resolve({bgColor: '#ffcc00', fgColor: '#000000'});
+                };
+                
                 img.src = imageSrc;
             });
         }
@@ -407,10 +996,17 @@
             // update control panel background
             controls.style.background = `rgba(${bgColor}, ${bgColor}, ${bgColor}, ${0.9 - alpha * 0.4})`;
             
+            // update tab navigation background
+            const tabNav = document.querySelector('.tab-navigation');
+            const navBgColor = Math.max(0, bgColor - 40); // slightly darker than main panel
+            tabNav.style.background = `rgba(${navBgColor}, ${navBgColor}, ${navBgColor}, ${0.7 - alpha * 0.3})`;
+            
             // auto-flip text color for contrast
             const shouldUseWhiteText = darkness > 50;
             const textColor = shouldUseWhiteText ? '#ffffff' : '#333333';
             const valueColor = shouldUseWhiteText ? '#cccccc' : '#666666';
+            const tabColor = shouldUseWhiteText ? '#999999' : '#666666';
+            const tabActiveColor = shouldUseWhiteText ? '#ffffff' : '#000000';
             
             // apply text colors
             document.querySelectorAll('.control-label').forEach(label => {
@@ -418,6 +1014,15 @@
             });
             document.querySelectorAll('.value-display').forEach(display => {
                 display.style.color = valueColor;
+            });
+            
+            // apply tab colors
+            document.querySelectorAll('.tab-button').forEach(button => {
+                if (!button.classList.contains('active')) {
+                    button.style.color = tabColor;
+                } else {
+                    button.style.color = tabActiveColor;
+                }
             });
             
             darknessValue.textContent = darkness + '%';
@@ -443,6 +1048,10 @@
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = async function(e) {
+                    // Store the image source for download
+                    currentBackgroundImageSrc = e.target.result;
+                    
+                    // Set the background
                     background.style.background = `url(${e.target.result})`;
                     background.style.backgroundRepeat = 'repeat';
                     background.style.backgroundSize = tileSizeSlider.value + 'px';
@@ -527,6 +1136,23 @@
         
         // set initial slider colors based on the default svg
         updateSliderColors();
+        
+        // Initialize tab colors based on default darkness
+        const initialDarkness = darknessSlider.value;
+        const shouldUseWhiteText = initialDarkness > 50;
+        const tabColor = shouldUseWhiteText ? '#999999' : '#666666';
+        const tabActiveColor = shouldUseWhiteText ? '#ffffff' : '#000000';
+        
+        document.querySelectorAll('.tab-button').forEach(button => {
+            if (!button.classList.contains('active')) {
+                button.style.color = tabColor;
+            } else {
+                button.style.color = tabActiveColor;
+            }
+        });
+        
+        // Load saved preferences from cookies
+        loadPreferences();
     </script>
 </body>
 </html>
